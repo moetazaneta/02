@@ -1,7 +1,6 @@
 import { createCommand } from '../utils/createCommand.js';
 import { spyAddSubcommand } from './add.js';
 import { spyChannelSubcommand } from './channel.js';
-import { spyDisableCommand } from './disable.js';
 import { spyRemoveSubcommand } from './remove.js';
 
 export const spyCommand = createCommand({

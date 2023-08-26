@@ -20,7 +20,7 @@ export async function addUser({ discordGuildId, discordUserId, anilistId }: AddU
   // add user to server subscribers
   const { error: serverUsersError } = await client
     .from('discord_server_users')
-    .insert([{ guild: discordGuildId, user: addedUser[0].id }])
+    .insert([{ guild_id: discordGuildId, user_id: addedUser[0].id }])
     .select();
 
   return { error: serverUsersError };

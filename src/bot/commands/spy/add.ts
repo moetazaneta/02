@@ -41,7 +41,7 @@ export const spyAddSubcommand = createSubcommand({
       return;
     }
 
-    const isAlreadyExist = await checkUserExist({ anilistId, discordUserId: member.id });
+    const isAlreadyExist = await checkUserExist({ anilistId, discordId: member.id });
 
     if (isAlreadyExist) {
       await interaction.followUp({

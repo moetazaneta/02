@@ -9,7 +9,7 @@ export async function checkUserExist({ discordId, anilistId }: CheckUserExistArg
   const { data, error } = await client
     .from('users')
     .select('*')
-    .or(`discord_id.eq.${discordId},anilist_id.eq.${anilistId},`)
+    .or(`discord_id.eq.${discordId},anilist_id.eq.${anilistId}`)
     .select();
 
   return data != null && data.length > 0;
