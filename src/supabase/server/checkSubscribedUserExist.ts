@@ -5,7 +5,7 @@ export type CheckUserExistArgs = {
   userId: string;
 };
 
-export async function checkSubscribedUserExist({ discordGuildId, userId }: CheckUserExistArgs) {
+export async function checkUserSubscribed({ discordGuildId, userId }: CheckUserExistArgs) {
   const { data, error } = await client
     .from('discord_server_users')
     .select('*')

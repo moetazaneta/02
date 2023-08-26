@@ -30,7 +30,6 @@ type CreateCommandArgs = {
 type CreateSubcommandArgs = {
   name: string;
   description: string;
-  // subcommands?: Subcommand[];
   customizeBuilder?: CustomizeSubcommandBuilderFn;
   execute: ExecuteFn;
 };

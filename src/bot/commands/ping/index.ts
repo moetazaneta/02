@@ -1,6 +1,8 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { createCommand } from '../utils/createCommand.js';
 
+const emoji_02 = '<:02:467828517472567296>';
+
 export const pingCommand = createCommand({
   name: 'ping',
   description: 'Test bot.',
@@ -14,7 +16,7 @@ export const pingCommand = createCommand({
     const ephemeral = interaction.options.getBoolean('ephemeral') ?? false;
 
     await interaction.reply({
-      content: '<:02:467828517472567296>',
+      content: emoji_02,
       ephemeral,
     });
   },

@@ -1,14 +1,14 @@
 import { client } from '../client.js';
 
 export type AddChannelArgs = {
-  channelId: string;
   guildId: string;
 };
-export async function addChannel({ guildId, channelId }: AddChannelArgs) {
+export async function removeChannel({ guildId }: AddChannelArgs) {
+  // prettier-ignore
   const { error } = await client
     .from('discord_servers')
-    .insert([{ guild_id: guildId, channel_id: channelId }])
-    .select();
+    .delete()
+    .eq('guild_id', guildId);
 
   if (error) throw error;
 }

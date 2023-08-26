@@ -1,4 +1,4 @@
-import { Events } from 'discord.js';
+import { Events, InteractionReplyOptions, codeBlock } from 'discord.js';
 import { client } from './client.js';
 import { commands } from './commands/index.js';
 
@@ -10,23 +10,31 @@ export function listenToSlashCommands() {
 
     if (!command) {
       console.error(`No command matching ${interaction.commandName} was found.`);
+
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp('not implemented');
+      } else {
+        await interaction.reply('not implemented');
+      }
       return;
     }
 
     try {
       await command.execute(interaction);
     } catch (error) {
+      const errorCodeBlock = codeBlock(JSON.stringify(error, null, 2));
+      const payload: InteractionReplyOptions = {
+        content: 'There was an error while executing this command!' + '\n' + errorCodeBlock,
+        ephemeral: true,
+      };
+
+      console.log('error in', command);
       console.error(error);
+
       if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: 'There was an error while executing this command!',
-          ephemeral: true,
-        });
+        await interaction.followUp(payload);
       } else {
-        await interaction.reply({
-          content: 'There was an error while executing this command!',
-          ephemeral: true,
-        });
+        await interaction.reply(payload);
       }
     }
   });
