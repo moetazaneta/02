@@ -3,6 +3,9 @@ import { addUser } from '../../../supabase/user/addUser.js';
 import { getAnilistUserIdByName } from '../../../supabase/functions/getAnilistUserIdByName.js';
 import { createSubcommand } from '../utils/createCommand.js';
 import { checkUserExist } from '../../../supabase/user/checkUserExist.js';
+import { addSubscribedUser } from '../../../supabase/server/addSubscribedUser.js';
+import { getUserByDiscordId } from '../../../supabase/user/getUserByDiscordId.js';
+import { checkSubscribedUserExist } from '../../../supabase/server/checkSubscribedUserExist.js';
 
 export const spyAddSubcommand = createSubcommand({
   name: 'add',
@@ -41,16 +44,6 @@ export const spyAddSubcommand = createSubcommand({
       return;
     }
 
-    const isAlreadyExist = await checkUserExist({ anilistId, discordId: member.id });
-
-    if (isAlreadyExist) {
-      await interaction.followUp({
-        content: "user's already being spy on.",
-        ephemeral: true,
-      });
-      return;
-    }
-
     if (!interaction.guildId) {
       await interaction.followUp({
         content: 'do it on the server.',
@@ -59,10 +52,44 @@ export const spyAddSubcommand = createSubcommand({
       return;
     }
 
-    const { error } = await addUser({
-      anilistId,
+    const isUserAlreadyExist = await checkUserExist({ anilistId, discordId: member.id });
+
+    let user;
+
+    if (!isUserAlreadyExist) {
+      const { data: addedUser, error } = await addUser({
+        anilistId,
+        discordUserId: member.id,
+      });
+      user = addedUser?.[0] ?? null;
+    } else {
+      user = await getUserByDiscordId(member.id);
+    }
+
+    if (!user) {
+      await interaction.followUp({
+        content: 'unlucky for you, ask to fix it',
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const isUserIsAlreadySubscribed = await checkSubscribedUserExist({
       discordGuildId: interaction.guildId,
-      discordUserId: member.id,
+      userId: user.id,
+    });
+
+    if (isUserIsAlreadySubscribed) {
+      await interaction.followUp({
+        content: "user's already being spy on.",
+        ephemeral: true,
+      });
+      return;
+    }
+
+    const { error } = await addSubscribedUser({
+      discordGuildId: interaction.guildId,
+      userId: user.id,
     });
 
     if (error != null) {

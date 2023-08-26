@@ -6,8 +6,6 @@ export function listenToSlashCommands() {
   client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
-    console.log(interaction.options.getSubcommand());
-
     const command = commands.get(interaction.commandName);
 
     if (!command) {

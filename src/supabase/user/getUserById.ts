@@ -1,10 +1,6 @@
 import { client } from '../client.js';
 
-export type GetUserArgs = {
-  userId: string;
-};
-
-export async function getUser(userId: string) {
+export async function getUserById(userId: string) {
   // prettier-ignore
   const { data, error } = await client
     .from('users')
