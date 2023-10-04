@@ -1,15 +1,16 @@
-import { SlashCommandBuilder } from 'discord.js';
 import { createCommand } from '../utils/createCommand.js';
 
 const emoji_02 = '<:02:467828517472567296>';
 
 export const pingCommand = createCommand({
   name: 'ping',
-  description: 'Test bot.',
-  customizeBuilder: b =>
-    b.addBooleanOption(o =>
-      o.setName('ephemeral').setDescription('Is ephemeral.')
-    ) as SlashCommandBuilder,
+  description: 'test bot',
+  // prettier-ignore
+  customizeBuilder: b => b
+    .addBooleanOption(o => o
+      .setName('ephemeral')
+      .setDescription('is ephemeral?')
+    ),
   async execute(interaction) {
     if (!interaction.isChatInputCommand()) return;
 

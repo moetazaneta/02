@@ -1,9 +1,9 @@
 import { ChannelType, EmbedBuilder, GuildMember } from 'discord.js';
-import { getSubscribedUserChannels } from '../supabase/server/getSubscribedUserChannels.js';
-import { subscribeToActivitiesChanges } from '../supabase/activities/listenToActivityChange.js';
-import { Activity } from '../types/index.js';
-import { client } from './client.js';
-import { getUserById } from '../supabase/user/getUserById.js';
+import { getSubscribedUserChannels } from '../../supabase/server/getSubscribedUserChannels.js';
+import { subscribeToActivitiesChanges } from '../../supabase/activities/listenToActivityChange.js';
+import { Activity } from '../../types/index.js';
+import { client } from '../discord/client.js';
+import { getUserById } from '../../supabase/user/getUserById.js';
 
 export async function listenToActivitiesChanges() {
   const userChannels = await getSubscribedUserChannels();
@@ -19,8 +19,7 @@ export async function listenToActivitiesChanges() {
       const user = await getUserById(activity.user_id);
       if (!user?.discord_id) return;
 
-      const guild = channel.guild;
-      const member = await guild.members.fetch({ user: user.discord_id, cache: false });
+      const member = await channel.guild.members.fetch({ user: user.discord_id, cache: false });
       const embed = await createEmbed(activity, member);
 
       channel.send({

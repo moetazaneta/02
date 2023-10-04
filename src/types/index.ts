@@ -6,5 +6,8 @@ export type Tables<T extends keyof DB['public']['Tables']> = DB['public']['Table
 
 export type Activity = Tables<'activities'>;
 export type User = Tables<'users'>;
-export type DiscordServer = Tables<'discord_servers'>;
+export type UserProvider = Tables<'user_providers'>;
+export type DiscordServerChannel = Tables<'discord_server_channels'>;
 export type DiscordServerUsers = Tables<'discord_server_users'>;
+
+export type Provider = 'shiki' | 'anilist';

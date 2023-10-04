@@ -1,16 +1,13 @@
+import { Provider } from '../../types/index.js';
 import { client } from '../client.js';
 
-export type CheckUserExistArgs = {
-  discordId: string;
-  anilistId: number;
-};
-
-export async function checkUserExist({ discordId, anilistId }: CheckUserExistArgs) {
+/** Checks whether user exists or not. */
+export async function checkUserExist(discordUserId: string) {
+  // prettier-ignore
   const { data, error } = await client
     .from('users')
     .select('*')
-    .or(`discord_id.eq.${discordId},anilist_id.eq.${anilistId}`)
-    .select();
+    .or(`discord_id.eq.${discordUserId}`);
 
   return data != null && data.length > 0;
 }

@@ -1,5 +1,5 @@
 import { User } from 'discord.js';
-import { DiscordServer } from '../../types/index.js';
+import { DiscordServerChannel } from '../../types/index.js';
 import { client } from '../client.js';
 
 /**
@@ -8,10 +8,10 @@ import { client } from '../client.js';
 export async function getSubscribedUserChannels() {
   const { data: userServers, error } = await client
     .from('discord_server_users')
-    .select('user: users (id), server: discord_servers ( guild_id, channel_id )');
+    .select('user: users (id), server: discord_server_channels ( guild_id, channel_id )');
 
   // users channels map
-  const map = new Map<User['id'], NonNullable<DiscordServer['channel_id']>[]>();
+  const map = new Map<User['id'], NonNullable<DiscordServerChannel['channel_id']>[]>();
 
   userServers?.forEach(({ user, server }) => {
     const channelId = server?.channel_id;

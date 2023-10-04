@@ -4,7 +4,7 @@ export type getGuildUserIdsArgs = {
   discordGuildId: string;
 };
 
-export async function getSubscribedUsers({ discordGuildId }: getGuildUserIdsArgs) {
+export async function getSubscribedUserIds({ discordGuildId }: getGuildUserIdsArgs) {
   const { data, error } = await client
     .from('discord_server_users')
     .select('*')

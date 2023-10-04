@@ -14,7 +14,9 @@ type Builder =
 
 type ExecuteFn = (interaction: Interaction<CacheType>) => Promise<void>;
 
-type CustomizeCommandBuilderFn = (builder: SlashCommandBuilder) => Builder;
+type CustomizeCommandBuilderFn = (
+  builder: SlashCommandBuilder
+) => Omit<SlashCommandBuilder, 'addSubcommandGroup' | 'addSubcommand'>;
 type CustomizeSubcommandBuilderFn = (
   builder: SlashCommandSubcommandBuilder
 ) => SlashCommandSubcommandBuilder;
@@ -67,7 +69,6 @@ export function createCommand({
   const executeSubcommands: ExecuteFn = async interaction => {
     if (!interaction.isChatInputCommand() || !subcommands) return;
 
-    // const subcommands = subcommandsArgs.map(createCommand);
     const calledSubcommandName = interaction.options.getSubcommand();
     const calledSubcommand = subcommands.find(
       subcommand => subcommand.name === calledSubcommandName

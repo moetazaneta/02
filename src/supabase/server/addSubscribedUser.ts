@@ -5,7 +5,7 @@ export type AddUserArgs = {
   userId: string;
 };
 
-export async function addSubscribedUser({ discordGuildId, userId }: AddUserArgs) {
+export async function subscribeUser({ discordGuildId, userId }: AddUserArgs) {
   return await client
     .from('discord_server_users')
     .insert([{ guild_id: discordGuildId, user_id: userId }])

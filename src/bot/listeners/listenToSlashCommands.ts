@@ -1,6 +1,6 @@
 import { Events, InteractionReplyOptions, codeBlock } from 'discord.js';
-import { client } from './client.js';
-import { commands } from './commands/index.js';
+import { commands } from '../commands/index.js';
+import { client } from '../discord/client.js';
 
 export function listenToSlashCommands() {
   client.on(Events.InteractionCreate, async interaction => {
@@ -12,9 +12,9 @@ export function listenToSlashCommands() {
       console.error(`No command matching ${interaction.commandName} was found.`);
 
       if (interaction.replied || interaction.deferred) {
-        await interaction.followUp('not implemented');
+        await interaction.followUp('followUp not implemented');
       } else {
-        await interaction.reply('not implemented');
+        await interaction.reply('reply not implemented');
       }
       return;
     }

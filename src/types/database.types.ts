@@ -74,35 +74,7 @@ export interface Database {
           }
         ]
       }
-      discord_server_users: {
-        Row: {
-          guild_id: string
-          user_id: string
-        }
-        Insert: {
-          guild_id: string
-          user_id: string
-        }
-        Update: {
-          guild_id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "discord_server_users_guild_id_fkey"
-            columns: ["guild_id"]
-            referencedRelation: "discord_servers"
-            referencedColumns: ["guild_id"]
-          },
-          {
-            foreignKeyName: "discord_server_users_user_id_fkey"
-            columns: ["user_id"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
-      discord_servers: {
+      discord_server_channels: {
         Row: {
           channel_id: string | null
           guild_id: string
@@ -117,24 +89,110 @@ export interface Database {
         }
         Relationships: []
       }
+      discord_server_users: {
+        Row: {
+          guild_id: string
+          is_active: boolean
+          user_id: string
+        }
+        Insert: {
+          guild_id: string
+          is_active?: boolean
+          user_id: string
+        }
+        Update: {
+          guild_id?: string
+          is_active?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discord_server_users_guild_id_fkey"
+            columns: ["guild_id"]
+            referencedRelation: "discord_server_channels"
+            referencedColumns: ["guild_id"]
+          },
+          {
+            foreignKeyName: "discord_server_users_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      settings: {
+        Row: {
+          created_at: string
+          data: Json | null
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          name: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          name?: string
+        }
+        Relationships: []
+      }
+      user_providers: {
+        Row: {
+          created_at: string
+          id: string
+          provider_type: string | null
+          provider_user_id: string | null
+          provider_user_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          provider_type?: string | null
+          provider_user_id?: string | null
+          provider_user_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          provider_type?: string | null
+          provider_user_id?: string | null
+          provider_user_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_providers_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       users: {
         Row: {
           anilist_id: number | null
           created_at: string
           discord_id: string | null
           id: string
+          name: string | null
         }
         Insert: {
           anilist_id?: number | null
           created_at?: string
           discord_id?: string | null
           id?: string
+          name?: string | null
         }
         Update: {
           anilist_id?: number | null
           created_at?: string
           discord_id?: string | null
           id?: string
+          name?: string | null
         }
         Relationships: []
       }
@@ -163,6 +221,7 @@ export interface Database {
           id: string
           name: string
           owner: string | null
+          owner_id: string | null
           public: boolean | null
           updated_at: string | null
         }
@@ -174,6 +233,7 @@ export interface Database {
           id: string
           name: string
           owner?: string | null
+          owner_id?: string | null
           public?: boolean | null
           updated_at?: string | null
         }
@@ -185,17 +245,11 @@ export interface Database {
           id?: string
           name?: string
           owner?: string | null
+          owner_id?: string | null
           public?: boolean | null
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "buckets_owner_fkey"
-            columns: ["owner"]
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       migrations: {
         Row: {
@@ -227,6 +281,7 @@ export interface Database {
           metadata: Json | null
           name: string | null
           owner: string | null
+          owner_id: string | null
           path_tokens: string[] | null
           updated_at: string | null
           version: string | null
@@ -239,6 +294,7 @@ export interface Database {
           metadata?: Json | null
           name?: string | null
           owner?: string | null
+          owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
           version?: string | null
@@ -251,6 +307,7 @@ export interface Database {
           metadata?: Json | null
           name?: string | null
           owner?: string | null
+          owner_id?: string | null
           path_tokens?: string[] | null
           updated_at?: string | null
           version?: string | null
@@ -260,12 +317,6 @@ export interface Database {
             foreignKeyName: "objects_bucketId_fkey"
             columns: ["bucket_id"]
             referencedRelation: "buckets"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "objects_owner_fkey"
-            columns: ["owner"]
-            referencedRelation: "users"
             referencedColumns: ["id"]
           }
         ]

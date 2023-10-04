@@ -18,4 +18,5 @@ export const env = {
     url: process.env['SUPABASE_URL']!,
     serviceKey: process.env['SUPABASE_SERVICE_ROLE_KEY']!,
   },
+  env: process.env['NODE_ENV']!,
 };
